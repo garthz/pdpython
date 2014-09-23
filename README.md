@@ -33,9 +33,36 @@ This is not the only Python plug-in for Pd, for example, see
 is simpler and perhaps easier to compile and install, although less fully
 featured.
 
+Compiling
+---------
+
+System requirements: make and cc.
+
+Makefiles are provided for supported targets.  Each has a few variables at the
+top which may need to be customized for your particular system.  In particular,
+on Mac OS X the include path for the Pd API is usually a folder buried within
+the Pd application folder.  It is also possible to set different Python include
+flags to link against a non-system-supplied Python library.
+
+Building under Mac OS X:
+  make -f Makefile.OSX
+
+Building under Linux
+  make -f Makefile.Linux
+
 
 Installation
 ------------
+
+There are three files to be installed:
+
+  1. the loadable module:  python.pd_Darwin or python.pd_linux
+  2. python-help.pd
+  3. python_help.py
+
+If compiled in-place, the correct install folder (e.g. install-OSX or
+install-Linux) can simply be added to the pd load path.  Or these files can be
+copied to an existing pd externals folder such as /usr/local/lib/pd-externals.
 
 
 Reference
@@ -49,7 +76,7 @@ The Pd 'python' object requires a minimum of two arguments at creation
 specifying the module name and the class name, followed by optional arguments
 passed to the object initializer:
 
-    [python module_name function_name [arg]*]
+    [python module_name function_name {arg}*]
     [python my_lib MyClassWithNoInitArgs]
     [python my_lib MyClass 1 2 3]
     [python my_lib.my_module MyClass 1 2 3]
@@ -71,11 +98,11 @@ follows:
 
 | Pd type              | Method call               |  Example Pd Message | Example Python Call
 -----------------------|---------------------------|---------------------|---------------------------
-|  bang                | `obj.bang()`              | [ bang ]       	 | `obj.bang()`
-|  float               | `obj.float(number)`       | [ 1.0 ]        	 | `obj.float( 1.0 )`
-|  symbol              | `obj.symbol(string)`      | [ symbol foo ]   	 | `obj.symbol( "foo" )`
-|  number list         | `obj.list( a1, a2, ...)`  | [ 1 2 3 ]      	 | `obj.list( 1.0, 2.0, 3.0 )`
-|  list with selector  | `obj.$selector( a1, ...)` | [ goto 4 ]     	 | `obj.goto( 4.0 )`
+|  bang                | `obj.bang()`              | [ bang (       	 | `obj.bang()`
+|  float               | `obj.float(number)`       | [ 1.0 (        	 | `obj.float( 1.0 )`
+|  symbol              | `obj.symbol(string)`      | [ symbol foo (   	 | `obj.symbol( "foo" )`
+|  number list         | `obj.list( a1, a2, ...)`  | [ 1 2 3 (      	 | `obj.list( 1.0, 2.0, 3.0 )`
+|  list with selector  | `obj.$selector( a1, ...)` | [ goto 4 (     	 | `obj.goto( 4.0 )`
 
 
 This follows a general Pd convention that messages with selectors are analogous
