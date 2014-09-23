@@ -34,8 +34,18 @@ $(EXTERNALS_DIR):
 # Define the compile and link flags for producing a loadable module.
 MODULE_CFLAGS = -fPIC -shared -I$(PD_INCLUDE_PATH)
 
+# Build the loadable module
 $(EXTERNALS_DIR)/python.$(EXTERNALS_EXT): src/pdpython.c
 	$(CC) $(MODULE_CFLAGS) $^ -o $@ $(PYTHON_CFLAGS) $(PYTHON_LDFLAGS)
 
+
+# Copy over the help patch.
+$(EXTERNALS_DIR)/python-help.pd: src/python-help.pd
+	cp $< $@
+
+$(EXTERNALS_DIR)/python_help.py: src/python_help.py
+	cp $< $@
+
+# Target to clean up the build folder.
 clean: $(EXTERNALS_DIR)
 	-rm -r $(EXTERNALS_DIR)/*

@@ -45,10 +45,12 @@ the Pd application folder.  It is also possible to set different Python include
 flags to link against a non-system-supplied Python library.
 
 Building under Mac OS X:
-  make -f Makefile.OSX
 
-Building under Linux
-  make -f Makefile.Linux
+    make -f Makefile.OSX
+
+Building under Linux:
+
+    make -f Makefile.Linux
 
 
 Installation
