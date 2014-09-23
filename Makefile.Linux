@@ -25,7 +25,7 @@ EXTERNALS_EXT = pd_linux
 EXTERNALS_DIR = install-Linux
 
 # Specify the default targets to build.
-default: $(EXTERNALS_DIR) $(EXTERNALS_DIR)/python.$(EXTERNALS_EXT)
+default: $(EXTERNALS_DIR) $(EXTERNALS_DIR)/python.$(EXTERNALS_EXT) $(EXTERNALS_DIR)/python-help.pd $(EXTERNALS_DIR)/python_help.py
 
 # Create the target folder if it doesn't exist.
 $(EXTERNALS_DIR):
