@@ -1,0 +1,29 @@
+#N canvas 518 22 838 571 10;
+#X obj 29 347 print dict-value;
+#X msg 29 181 set name Hilbert;
+#X msg 51 254 get name;
+#X msg 42 212 set age 42;
+#X obj 29 312 python pydict PdDict person;
+#X obj 31 467 python pydict PdDict person;
+#X msg 31 441 keys;
+#X obj 16 14 cnv 15 800 120 empty empty python-dictionary 20 12 0 14
+-204800 -66577 0;
+#X text 184 17 Demonstration of providing Pd access to Python objects
+through a wrapper class which manages globally named objects.;
+#X text 207 307 Object which references a named dictionary \, which
+is created if it does not yet exist.;
+#X text 31 417 Return a list of all keys in the dictionary.;
+#X text 147 180 Messages to set key-value pairs in the dictionary.
+;
+#X text 207 463 Another object which references the same underlying
+dictionary by name.;
+#X obj 31 493 print dict-keys-result;
+#X msg 65 281 get age;
+#X text 114 254 Messages to fetch the value for a given key.;
+#X connect 1 0 4 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 13 0;
+#X connect 6 0 5 0;
+#X connect 14 0 4 0;

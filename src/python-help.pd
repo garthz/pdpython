@@ -1,0 +1,115 @@
+#N canvas 631 -845 621 712 10;
+#X obj 16 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 50 458 metro 1000;
+#X obj 60 428 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 50 399 stop;
+#X floatatom 65 284 5 0 0 0 - - -;
+#X msg 125 199 1 2 3;
+#X symbolatom 255 215 10 0 0 0 - - -;
+#X msg 465 263 goto home;
+#X obj 255 193 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 456 232 moveto 1 2 3;
+#X obj 19 399 vsl 15 50 0 50 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X msg 446 199 blah;
+#X obj 20 603 python python_help PyHelpClass;
+#X msg 213 479 list symbol;
+#X msg 269 242 symbol symbol;
+#X msg 141 228 list 1 2 3;
+#X obj 82 329 s msg-to-python;
+#X obj 19 499 s msg-to-python;
+#X obj 478 327 s msg-to-python;
+#X text 199 373 quirky cases;
+#X obj 304 329 s msg-to-python;
+#X msg 157 256 list blah foo;
+#X msg 160 396 list;
+#X msg 177 422 symbol;
+#X msg 195 451 float;
+#X msg 51 257 float 6;
+#X msg 35 228 6;
+#X msg 283 268 symbol foo;
+#X msg 229 504 list foo;
+#X msg 172 284 list symbol foo;
+#X text 13 182 bang;
+#X text 35 210 float;
+#X text 123 176 list;
+#X obj 235 530 s msg-to-python;
+#X text 193 395 empty list;
+#X text 222 421 null symbol;
+#X text 235 451 implicit zero;
+#X msg 297 481 foo;
+#X obj 297 504 pack s;
+#X symbolatom 365 244 10 0 0 0 - - -;
+#X msg 365 218 list bar;
+#X obj 364 298 unpack s;
+#X msg 364 273 bar;
+#X text 323 478 improper lists;
+#X msg 414 415 tuple;
+#X obj 414 438 s msg-to-python;
+#X obj 8 8 cnv 15 600 130 empty empty python 20 12 0 14 -204800 -66577
+0;
+#X obj 20 628 print output-from-Python-PyHelpClass;
+#X text 254 173 symbols;
+#X text 89 11 External for embedding Python programs within Pd.;
+#X text 253 562 Python objects have two required creation arguments:
+module_name class_name;
+#X text 251 598 Additional creation arguments are passed to the class
+initializer function.;
+#X text 251 632 This object represents an instance of the PyHelpClass
+found in the python_help.py file.;
+#X obj 189 329 s msg-to-python;
+#X text 16 374 typical Pd messages;
+#X obj 20 576 r msg-to-python;
+#X text 400 380 Python tuples are returned;
+#X text 400 390 as multiple messages.;
+#X text 251 664 The Python load path is extended to include the current
+canvas path so that Python modules can be located in the same folder
+as a patch.;
+#X text 90 59 Most of the output of this patch appears in the console
+window. It demonstrates how Pd types appear to Python and shows some
+of the quirks of the Pd type system.;
+#X text 89 104 This is best understood by also examining the Python
+code in python_help.py \, usually installed next to python-help.pd
+;
+#X text 89 28 Copyright (c) 2014 \, Garth Zeglin. Provided under the
+terms of the 3-clause BSD license.;
+#X text 11 147 Lists and atomic types are received by specific methods
+in a Python class.;
+#X text 431 150 Messages with selectors;
+#X text 431 162 call methods by name.;
+#X connect 0 0 16 0;
+#X connect 1 0 17 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 16 0;
+#X connect 5 0 53 0;
+#X connect 6 0 20 0;
+#X connect 7 0 18 0;
+#X connect 8 0 6 0;
+#X connect 9 0 18 0;
+#X connect 10 0 17 0;
+#X connect 11 0 18 0;
+#X connect 12 0 47 0;
+#X connect 13 0 33 0;
+#X connect 14 0 20 0;
+#X connect 15 0 53 0;
+#X connect 21 0 53 0;
+#X connect 22 0 33 0;
+#X connect 23 0 33 0;
+#X connect 24 0 33 0;
+#X connect 25 0 16 0;
+#X connect 26 0 16 0;
+#X connect 27 0 20 0;
+#X connect 28 0 33 0;
+#X connect 29 0 53 0;
+#X connect 37 0 38 0;
+#X connect 38 0 33 0;
+#X connect 39 0 20 0;
+#X connect 40 0 39 0;
+#X connect 41 0 20 0;
+#X connect 42 0 41 0;
+#X connect 44 0 45 0;
+#X connect 55 0 12 0;

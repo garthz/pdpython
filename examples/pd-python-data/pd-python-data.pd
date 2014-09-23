@@ -1,0 +1,105 @@
+#N canvas 521 22 952 673 10;
+#X obj 33 242 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 154 585 metro 1000;
+#X obj 154 533 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 114 532 stop;
+#X floatatom 120 303 5 0 0 0 - - -;
+#X msg 233 236 1 2 3;
+#X symbolatom 363 222 10 0 0 0 - - -;
+#X msg 711 261 goto home;
+#X obj 363 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 698 228 moveto 1 2 3;
+#X obj 65 501 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X msg 679 197 blah;
+#X text 12 476 sliders send float;
+#X obj 73 900 python demo_class DemoClass;
+#X msg 463 590 list symbol;
+#X msg 376 251 symbol symbol;
+#X msg 233 266 list 1 2 3;
+#X obj 109 371 s msg-to-python;
+#X obj 73 815 r msg-to-python;
+#X text 86 155 fundamental types;
+#X obj 86 697 s msg-to-python;
+#X text 120 506 polling with bangs;
+#X obj 676 367 s msg-to-python;
+#X text 394 445 quirky cases;
+#X obj 363 368 s msg-to-python;
+#X msg 231 293 list blah foo;
+#X text 673 167 messages with selectors;
+#X msg 378 477 list;
+#X msg 400 505 symbol;
+#X msg 422 530 float;
+#X msg 110 272 float 6;
+#X msg 97 241 6;
+#X msg 468 252 symbol foo;
+#X msg 463 619 list foo;
+#X msg 231 321 list symbol foo;
+#X text 27 204 bang;
+#X text 79 203 float;
+#X text 231 208 list;
+#X obj 364 708 s msg-to-python;
+#X text 411 476 empty list;
+#X text 445 504 null symbol;
+#X text 462 530 implicit zero;
+#X msg 485 645 foo;
+#X obj 485 668 pack s;
+#X symbolatom 555 250 10 0 0 0 - - -;
+#X msg 555 218 list bar;
+#X obj 555 318 unpack s;
+#X msg 555 293 bar;
+#X text 463 566 improper lists;
+#X msg 668 502 tuple;
+#X obj 669 703 s msg-to-python;
+#X obj 14 18 cnv 15 800 120 empty empty pd-python-data 20 12 0 14 -204800
+-66577 0;
+#X text 155 21 Demonstration of sending Pd data types to and from a
+Python object.;
+#X obj 84 860 print input-to-Python-DemoClass;
+#X obj 73 939 print output-from-Python-DemoClass;
+#X text 452 157 symbols;
+#X text 156 60 Most of the output of this patch appears in the console
+window. It shows off some of the quirks of the Pd type system as well
+as some different ways to reformulate messages.;
+#X text 71 756 The actual Python function call test. This routes messages
+to an instance of the DemoClass class found in demo_class.py \, printing
+the message sent and the return value received.;
+#X text 612 452 Python tuples are returned as multiple messages \;
+this calls DemoClass.tuple() to demonstrate this.;
+#X connect 0 0 17 0;
+#X connect 1 0 20 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 17 0;
+#X connect 5 0 17 0;
+#X connect 6 0 24 0;
+#X connect 7 0 22 0;
+#X connect 8 0 6 0;
+#X connect 9 0 22 0;
+#X connect 10 0 20 0;
+#X connect 11 0 22 0;
+#X connect 13 0 54 0;
+#X connect 14 0 38 0;
+#X connect 15 0 24 0;
+#X connect 16 0 17 0;
+#X connect 18 0 53 0;
+#X connect 18 0 13 0;
+#X connect 25 0 17 0;
+#X connect 27 0 38 0;
+#X connect 28 0 38 0;
+#X connect 29 0 38 0;
+#X connect 30 0 17 0;
+#X connect 31 0 17 0;
+#X connect 32 0 24 0;
+#X connect 33 0 38 0;
+#X connect 34 0 17 0;
+#X connect 42 0 43 0;
+#X connect 43 0 38 0;
+#X connect 44 0 24 0;
+#X connect 45 0 44 0;
+#X connect 46 0 24 0;
+#X connect 47 0 46 0;
+#X connect 49 0 50 0;

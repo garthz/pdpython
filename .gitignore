@@ -27,3 +27,18 @@
 *.i*86
 *.x86_64
 *.hex
+
+# Python compiled objects
+*.pyc
+
+# Compiled Pd externals
+*.pd_Darwin
+*.pd_linux
+
+# Build directories
+install-OSX
+install-Linux
+
+# Other cruft
+.DS_Store
+*~
