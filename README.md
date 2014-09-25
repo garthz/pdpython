@@ -23,10 +23,11 @@ distribute data into multiple points in the Pd graph.
 Note that data returned from Python is passed to the Pd object outlet but that
 the outlet function is not called directly from Python.  This avoids potential
 problems with recursive calls back into Python, but does make it more difficult
-for Python objects to actively query the Pd graph; th by. 
+for Python objects to actively query the Pd graph.
 
-Note that no support is currently provided for reloading a module, so modifying
-the Python generally requires restarting Pd.
+One of the examples demonstrates how to set up a patch so that a Python module
+can be reloaded without exiting Pd.  This has limits since existing objects need
+to be forced to reinstantiate to use the new code.
 
 This is not the only Python plug-in for Pd, for example, see
 [py/pyext](http://grrrr.org/research/software/py/).  However, I believe this one
@@ -36,7 +37,7 @@ featured.
 Compiling
 ---------
 
-System requirements: make and cc.
+System requirements: make, a C compiler, a Pd installation, and Python 2.7.
 
 Makefiles are provided for supported targets.  Each has a few variables at the
 top which may need to be customized for your particular system.  In particular,

@@ -1,0 +1,37 @@
+#N canvas 450 163 847 469 10;
+#X obj 14 18 cnv 15 800 120 empty empty reloading-code 20 12 0 14 -204800
+-66577 0;
+#X obj 62 388 python reloader Reloader;
+#X msg 62 358 reload_demo_module;
+#X symbolatom 62 261 10 0 0 0 - - -;
+#X msg 62 201 get_value;
+#X obj 62 290 print value-from-TestClass;
+#X obj 62 163 bng 25 250 50 0 empty empty Query 30 12 0 14 -4034 -1
+-1;
+#X text 291 204 Note the initial value returned in response to the
+query.;
+#X text 291 225 Edit demo_module.py to change the return value.;
+#X text 290 314 Then force the TestClass object to be reinstantiated
+\; this is most easily done by adding a space to the end of the object
+box and pressing enter.;
+#X text 291 369 Try the query once more \; the new version of the object
+should return the new value.;
+#X obj 62 320 bng 25 250 50 0 empty empty Reload 30 12 0 14 -4034 -1
+-1;
+#X text 155 21 Demonstration of dynamically reloading a Python module
+that was previously loaded into Pd.;
+#X text 155 60 Reloading modules in Python only works in simple cases
+\, since subsidiary modules are not reloaded \, any existing objects
+continue to use the same code \, and native-code externals are never
+reloaded.;
+#X obj 62 231 python demo_module TestClass;
+#X text 291 271 Try the query again. Note that the object hasn't changed
+\, and the same response is returned.;
+#X text 291 247 Next \, use the helper Reloader object to reload demo_module.
+;
+#X connect 2 0 1 0;
+#X connect 4 0 14 0;
+#X connect 6 0 4 0;
+#X connect 11 0 2 0;
+#X connect 14 0 3 0;
+#X connect 14 0 5 0;
