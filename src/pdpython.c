@@ -250,7 +250,9 @@ static void *pdpython_new(t_symbol *selector, int argcount, t_atom *argvec)
     // located in the same folder as the patch.
     t_symbol *canvas_path = canvas_getcurrentdir();
     PyObject* modulePath = PyUnicode_FromString( canvas_path->s_name );
-    PyObject* sysPath    = PySys_GetObject( (char*) "path" ); // borrowed reference
+    post("modulepath: %s", canvas_path->s_name);
+    
+    PyObject *sysPath = PySys_GetObject((char *)"path"); // borrowed reference
 
     if ( !PySequence_Contains( sysPath, modulePath )) {
       post("Appending current canvas path to Python load path: %s", canvas_path->s_name );
@@ -371,6 +373,12 @@ void python_setup(void)
 
   Py_SetProgramName(program);
 
+  // make the internal pdgui wrapper module available for Python->C callbacks
+  if (PyImport_AppendInittab("pdgui", PyInit_pdgui) == -1)
+  {
+    post("Error: unable to create the pdgui module.");
+  }
+
   // static initialization follows
   // Py_SetProgramName("pd");
   Py_Initialize();
@@ -380,22 +388,7 @@ void python_setup(void)
   static wchar_t *arg0 = NULL;
   PySys_SetArgv( 0, &arg0 );
 
-  // make the internal pdgui wrapper module available for Python->C callbacks
-
-  if (PyInit_pdgui() == NULL)
-  {
-    post("Error: unable to create the pdgui module.");
-  }
-
-  //   if (Py_InitModule("pdgui", pdgui_methods ) == NULL) {
-  //     post("Error: unable to create the pdgui module.");
-  //  }
 }
 
-// PyMODINIT_FUNC
-// PyInit_pdgui(void)
-// {
-//   return PyModule_Create(&pdguimodule);
-// }
 /****************************************************************/
 
