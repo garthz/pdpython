@@ -6,19 +6,20 @@
 
 # Configure the include path for Pure Data.  This is typically a path buried
 # within the OS X application folder containing the m_pd.h header file.
-PD_INCLUDE_PATH=/Applications/local/Pd-extended-0.43.4-i386.app/Contents/Resources/include
+PD_INCLUDE_PATH=/Applications/Studio/Pd-0.51-4.app/Contents/Resources/src
 
 # Configure to compile and link against the default Python system.  Note that OS
 # X provides a Python interpreter, but alternative interpreters and virtualenv
 # environments could also be configured here.
 
-PYTHON_CFLAGS  := `python-config  --cflags`
-PYTHON_LDFLAGS := `python-config  --ldflags`
+PYTHON_CFLAGS  := `python3-config  --cflags`
+PYTHON_LDFLAGS := `python3-config  --ldflags`
+PYTHON_LIB=-lpython3.9
 
 # ---- The following settings do not usually need to be changed ----
 
 # Specify the extension to use for the loadable module.
-EXTERNALS_EXT = pd_Darwin
+EXTERNALS_EXT = pd_darwin
 
 # Specify a folder to hold the compiled binary Pd loadable modules.
 EXTERNALS_DIR = install-OSX
@@ -35,8 +36,8 @@ MODULE_CFLAGS = -bundle -undefined suppress -flat_namespace -I$(PD_INCLUDE_PATH)
 
 # Build the loadable module and remove the extraneous symbols folder.
 $(EXTERNALS_DIR)/python.$(EXTERNALS_EXT): src/pdpython.c
-	$(CC) $(MODULE_CFLAGS) $^ -o $@ $(PYTHON_CFLAGS) $(PYTHON_LDFLAGS)
-	-rm -r $(EXTERNALS_DIR)/python.pd_Darwin.dSYM
+	$(CC) $(MODULE_CFLAGS) $^ -o $@ $(PYTHON_CFLAGS) $(PYTHON_LDFLAGS) $(PYTHON_LIB)
+	-rm -r $(EXTERNALS_DIR)/python.pd_darwin.dSYM
 
 # Copy over the help patch.
 $(EXTERNALS_DIR)/python-help.pd: src/python-help.pd

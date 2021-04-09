@@ -53,7 +53,7 @@ static PyObject *t_atom_to_PyObject( t_atom *atom )
 
   case A_SYMBOL:
     // symbols are returned as strings
-    return PyString_FromString( atom->a_w.w_symbol->s_name  );
+    return PyUnicode_FromString( atom->a_w.w_symbol->s_name  );
 
   case A_NULL:
     Py_RETURN_NONE;
@@ -96,8 +96,7 @@ static void PyObject_to_atom( PyObject *value, t_atom *atom )
   else if (value == Py_False)      SETFLOAT( atom, 0.0 );
   else if ( PyFloat_Check(value))  SETFLOAT( atom, (float) PyFloat_AsDouble( value ));
   else if ( PyLong_Check(value))   SETFLOAT( atom, (float) PyLong_AsLong( value ));
-  else if ( PyInt_Check(value))    SETFLOAT( atom, (float) PyLong_AsLong( value ));
-  else if ( PyString_Check(value)) SETSYMBOL( atom, gensym( PyString_AsString(value) ));
+  else if ( PyUnicode_Check(value)) SETSYMBOL( atom, gensym( PyUnicode_AsUTF8(value) ));
   else SETSYMBOL( atom, gensym("error"));
 }
 /****************************************************************/
@@ -132,8 +131,7 @@ static void emit_outlet_message( PyObject *value, t_outlet *x_outlet )
   // scalar numbers of various types come out as float
   else if ( PyFloat_Check(value))  outlet_float(  x_outlet, (float) PyFloat_AsDouble( value ));
   else if ( PyLong_Check(value))   outlet_float(  x_outlet, (float) PyLong_AsLong( value ));
-  else if ( PyInt_Check(value))    outlet_float(  x_outlet, (float) PyLong_AsLong( value ));
-  else if ( PyString_Check(value)) outlet_symbol( x_outlet, gensym( PyString_AsString(value) ));
+  else if ( PyUnicode_Check(value)) outlet_symbol( x_outlet, gensym( PyUnicode_AsUTF8(value) ));
 
   else if ( PyList_Check(value) ) {
     // Create an atom array representing a 1D Python list.
@@ -251,7 +249,7 @@ static void *pdpython_new(t_symbol *selector, int argcount, t_atom *argvec)
     // present.  This will help the module import to find Python modules
     // located in the same folder as the patch.
     t_symbol *canvas_path = canvas_getcurrentdir();
-    PyObject* modulePath = PyString_FromString( canvas_path->s_name );
+    PyObject* modulePath = PyUnicode_FromString( canvas_path->s_name );
     PyObject* sysPath    = PySys_GetObject( (char*) "path" ); // borrowed reference
 
     if ( !PySequence_Contains( sysPath, modulePath )) {
@@ -332,6 +330,19 @@ static PyMethodDef pdgui_methods[] = {
   { NULL, NULL, 0, NULL }
 };
 
+static struct PyModuleDef pdguimodule = {
+    PyModuleDef_HEAD_INIT,
+    "pdgui", /* name of module */
+    NULL,    /* module documentation, may be NULL */
+    -1,      /* size of per-interpreter state of the module,
+                 or -1 if the module keeps state in global variables. */
+    pdgui_methods};
+
+PyMODINIT_FUNC
+PyInit_pdgui(void)
+{
+  return PyModule_Create(&pdguimodule);
+}
 /****************************************************************/
 /// Initialization entry point for the Pd 'python' external.  This is
 /// automatically called by Pd after loading the dynamic module to initialize
@@ -352,18 +363,39 @@ void python_setup(void)
   // inlet-callback function.
   class_addanything( pdpython_class, (t_method) pdpython_eval);   // (t_class *c, t_method fn)
 
+  wchar_t *program;
+  program = Py_DecodeLocale("py", NULL);
+  if (program == NULL) {
+      exit(1);
+  }
+
+  Py_SetProgramName(program);
+
   // static initialization follows
-  Py_SetProgramName("pd");
+  // Py_SetProgramName("pd");
   Py_Initialize();
 
-  // Make sure that sys.argv is defined. 
-  static char *arg0 = NULL;
+  // Make sure that sys.argv is defined.
+  // static char *arg0 = NULL;
+  static wchar_t *arg0 = NULL;
   PySys_SetArgv( 0, &arg0 );
 
   // make the internal pdgui wrapper module available for Python->C callbacks
-  if (Py_InitModule("pdgui", pdgui_methods ) == NULL) {
+
+  if (PyInit_pdgui() == NULL)
+  {
     post("Error: unable to create the pdgui module.");
- }
+  }
+
+  //   if (Py_InitModule("pdgui", pdgui_methods ) == NULL) {
+  //     post("Error: unable to create the pdgui module.");
+  //  }
 }
+
+// PyMODINIT_FUNC
+// PyInit_pdgui(void)
+// {
+//   return PyModule_Create(&pdguimodule);
+// }
 /****************************************************************/
 

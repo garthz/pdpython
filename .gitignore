@@ -1,3 +1,6 @@
+# code editor
+.vscode/
+
 # Object files
 *.o
 *.ko
