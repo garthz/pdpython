@@ -1,17 +1,64 @@
 pdpython
 ========
 
-This repository contains an 'external' (plugin) for [Pure
-Data](http://puredata.info) to allow embedding Python programs within Pd program
-graphs.  The main 'python' object provided enables loading Python modules,
-instantiating Python objects, calling object methods, and receiving method return
-values.  
+This repository contains an 'external' (plugin) for [Pure Data](http://puredata.info) to allow embedding Python programs within Pd program graphs. The main 'python' object provided enables loading Python modules, instantiating Python objects, calling object methods, and receiving method return values.
 
 The methods in objects called from Pd are expected to follow a particular naming
-convention.  In general practice, Pd-oriented interface classes need to be
-defined for a given application.  However, since Pd has a limited vocabulary of
-data types sent and returned from Python, these classes can be developed and
-tested separately from Pd.
+convention as below: 
+
+```python
+
+# import the special module built in to the external.
+import pdgui
+
+class MyClass:
+
+    def __init__(self, *args):
+        pdgui.post(str(args))
+        self.args = args
+
+    # The following methods are called in response to basic typed messages.
+    def bang(self):
+        pdgui.post("received bang.")
+        return True
+
+    def float(self, number):
+        pdgui.post("received %f." % number)
+        return number
+
+    def symbol(self, string):
+        pdgui.post( "received symbol: '%s'." % string)
+        return string
+
+    def list(self, *args):
+        # note that the *args form provides a tuple
+        pdgui.post( "received list: %s." % str(args))
+        return list(args)
+
+    # Messages with selectors are analogous to function calls, and call the
+    # corresponding method.  E.g., the following could called by sending the Pd
+    # message [goto 33(.
+    def goto(self, location):
+        pdgui.post( "received goto message:" + location)
+        return location
+
+    # This method demonstrates returning a list, which returns as a Pd list.
+    def moveto( self, x, y, z):
+        pdgui.post( "received move message with %f, %f, %f." % ( x, y, z))
+        return [x, y, z]
+
+    def blah(self):
+        pdgui.post( "received blah message.")
+        return 42.0
+
+    # This method demostrates returning a tuple, each element of which generates
+    # a separate Pd outlet message.
+    def tuple(self):
+        pdgui.post("received tuple message.")
+        return ( ['element', 1], ['element', 2], ['element', 3],[ 'element',4 ] )
+```
+
+In general practice, Pd-oriented interface classes need to be defined for a given application.  However, since Pd has a limited vocabulary of data types sent and returned from Python, these classes can be developed and tested separately from Pd.
 
 All data is converted between native primitive types for Pd and Python.  Native
 Python objects cannot be passed through Pd but this can in practice be
@@ -37,21 +84,27 @@ featured.
 Compiling
 ---------
 
-System requirements: make, a C compiler, a Pd installation, and Python 2.7.
+System requirements: make, a C compiler, a Pd installation, and Python 3
 
-Makefiles are provided for supported targets.  Each has a few variables at the
-top which may need to be customized for your particular system.  In particular,
-on Mac OS X the include path for the Pd API is usually a folder buried within
-the Pd application folder.  It is also possible to set different Python include
-flags to link against a non-system-supplied Python library.
+A Makefile is provided using the now standard [pd-lib-builder](https://github.com/pure-data/pd-lib-builder) method. which makes it relatively easy to build for different platforms. 
 
-Building under Mac OS X:
+It does make some assumptions about paths. This makefile supports pd path variables which can be defined not only as make command argument but also in the environment, to override platform-dependent defaults:
 
-    make -f Makefile.OSX
+PDDIR: Root directory of 'portable' pd package. When defined, PDINCLUDEDIR and PDBINDIR will be evaluated as $(PDDIR)/src and $(PDDIR)/bin.
 
-Building under Linux:
+PDINCLUDEDIR: Directory where Pd API m_pd.h should be found, and other Pd header files. Overrides the default search path.
 
-    make -f Makefile.Linux
+PDBINDIR: Directory where pd.dll should be found for linking (Windows only). Overrides the default search path.
+
+PDLIBDIR: Root directory for installation of Pd library directories. Overrides the default install location.
+
+Generally, it is sufficient to define PDDIR either as an exported variable or in the Makefile itself (see Makefile for example). Then just `make`
+
+```
+make
+```
+
+It is also possible to set different Python include flags to link against a non-system-supplied Python library.
 
 
 Installation
@@ -59,13 +112,11 @@ Installation
 
 There are three files to be installed:
 
-  1. the loadable module:  python.pd_Darwin or python.pd_linux
+  1. the loadable module:  python.pd_darwin or python.pd_linux
   2. python-help.pd
   3. python_help.py
 
-If compiled in-place, the correct install folder (e.g. install-OSX or
-install-Linux) can simply be added to the pd load path.  Or these files can be
-copied to an existing pd externals folder such as /usr/local/lib/pd-externals.
+If compiled in-place, the `pdpython` directory can simply be added to the pd load path.  Or these files can be copied to an existing pd externals folder such as /usr/local/lib/pd-externals.
 
 
 Reference
