@@ -35,12 +35,9 @@
 *.pyc
 
 # Compiled Pd externals
-*.pd_Darwin
+*.pd_darwin
 *.pd_linux
 
-# Build directories
-install-OSX
-install-Linux
 
 # Other cruft
 .DS_Store

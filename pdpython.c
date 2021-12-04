@@ -2,6 +2,7 @@
 /// Copyright (c) 2014, Garth Zeglin.  All rights reserved.  Provided under the
 /// terms of the BSD 3-clause license.
 ///
+/// Updated to Python3 and modernized build methods by S. Alireza (shakfu)
 /// Each Pd 'python' object represents a single instance of a Python class object.
 
 /****************************************************************/
@@ -338,7 +339,12 @@ static struct PyModuleDef pdguimodule = {
     NULL,    /* module documentation, may be NULL */
     -1,      /* size of per-interpreter state of the module,
                  or -1 if the module keeps state in global variables. */
-    pdgui_methods};
+    pdgui_methods, /* A pointer to a table of module-level functions */
+    NULL, /* When using single-phase initialization, m_slots must be NULL */
+    NULL, /* traversal function to call during GC traversal of the module object*/
+    NULL, /* clear func to call during GC clearing of module object, or NULL if not needed.*/
+    NULL  /* func to call during deallocation of module object, or NULL if not needed. */
+};
 
 PyMODINIT_FUNC
 PyInit_pdgui(void)
